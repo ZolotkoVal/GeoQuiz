@@ -1,5 +1,6 @@
 package com.bignerdranch.android.geomain
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -43,7 +44,8 @@ class MainActivity : AppCompatActivity() {
             updateQuestion()
         }
         cheatButton.setOnClickListener {
-            // Начало CheatActivity
+            val intent = Intent(this, CheatActivity::class.java)
+            startActivity(intent)
         }
         updateQuestion()
     }
