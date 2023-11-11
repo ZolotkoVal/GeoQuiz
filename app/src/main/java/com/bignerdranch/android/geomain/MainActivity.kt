@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         }
         if (requestCode == REQUEST_CODE_CHEAT){
             quizViewModel.isCheater = data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
+            quizViewModel.scoreCheats()
         }
     }
     override fun onStart() {
@@ -67,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         if (quizViewModel.questionBank[quizViewModel.currentIndex].answered == true) {
             falseButton.setEnabled(false);
             trueButton.setEnabled(false);
+
         }
     }
     override fun onResume() {
@@ -95,20 +97,29 @@ class MainActivity : AppCompatActivity() {
         questionTextView.setText(questionTextResId)
         if (quizViewModel.currentIndex == quizViewModel.questionsSize-1) {
             nextButton.setEnabled(false);
+
         }
             falseButton.setEnabled(true);
             trueButton.setEnabled(true);
+            cheatButton.setEnabled(true);
+        if (quizViewModel.cheats >= 3){
+            cheatButton.setEnabled(false);
+        }
     }
     private fun checkAnswer(userAnswer:Boolean)
     {
         quizViewModel.questionBank[quizViewModel.currentIndex].answered = true
         falseButton.setEnabled(false);
         trueButton.setEnabled(false);
-        val   correctAnswer   = quizViewModel.currentQuestionAnswer
+        cheatButton.setEnabled(false);
+        val   correctAnswer: Boolean = quizViewModel.currentQuestionAnswer
         val messageResId = when {
             quizViewModel.isCheater -> R.string.judgment_toast
             userAnswer == correctAnswer -> R.string.correct_toast
             else -> R.string.incorrect_toast
+        }
+        if (userAnswer == correctAnswer){
+            quizViewModel.score()
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
         if (quizViewModel.currentIndex == quizViewModel.questionsSize-1) {

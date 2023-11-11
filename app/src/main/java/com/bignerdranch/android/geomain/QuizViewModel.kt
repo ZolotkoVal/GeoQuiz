@@ -9,7 +9,7 @@ class QuizViewModel : ViewModel() {
     var currentIndex = 0
     var correctCount = 0
     var isCheater = false
-    var cheats =3
+    var cheats = 0
     public val questionBank = listOf(Question(R.string.question_australia,true, false),
         Question(R.string.question_oceans, true, false),
         Question(R.string.question_mideast, false, false),
@@ -26,5 +26,8 @@ class QuizViewModel : ViewModel() {
     }
     fun score(){
         correctCount += 1
+    }
+    fun scoreCheats(){
+        cheats += 1
     }
 }
